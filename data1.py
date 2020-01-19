@@ -63,11 +63,13 @@ boston_pd=pd.DataFrame(boston.data, columns=boston.feature_names)
 # Чертане на хистограма, която дава представа за
 # това колко броя жилища се намират във всеки 
 # ценови диапазон
+# Параметърът bins= дава колко колони трябва да 
+# има хистограмата.
 
 plt.figure()
-plt.hist(boston.target)
+plt.hist(boston.target, bins=30)
 plt.title("Хистограма на цените на недв. имущество в Бостън")
-plt.xlabel("Цена на кв. фут(???) в хил. долари")
+plt.xlabel("Цена на имотите в хил. долари")
 plt.ylabel("Брой имоти")
 plt.show()
 
@@ -105,6 +107,7 @@ cor_matr = boston_pd.corr().round(1)
 
 # Корелационната матрица може да се визуализира ефектно
 # като се използва heatmap от библиотеката seaborn
+# annot = True изписва текста освен цветовете
 ax = sb.heatmap(data=cor_matr, annot=True)
 
 # Seaborn не работи много добре с новите версии на 
