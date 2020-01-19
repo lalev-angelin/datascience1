@@ -121,19 +121,38 @@ ax.set_ylim(bottom+0.5, top-0.5)
 plt.show()
 
 # Регресия по един параметър - брой на стаите
+# train_set_split разделя двата масива - X (предиктори) и Y (резултат)
+# на обучително (train) и тестово (test) множество, като разпределението 
+# става на случаен принцип. 
+#
+# Резултатът са 4 масива, които съдържат съответно:
+# train_set_x - предиктори, върху които ще се извърши "обучението" на модела
+# train_set_y - съответващи на горните предиктори резултати, които 
+#               ще се използват при обучението.
+# test_set_x - предиктори, които ще се използват за тестване на обучения модел
+# test_set_y - ... и съответстващите им коментари
 train_set_x, test_set_x, train_set_y, test_set_y = train_test_split(boston.data[:,5], boston.target, test_size=0.2, random_state=5) 
 
+# Нуждаем се от това, за да оформим резултата като двумерен (x, 1) масив, където x е броят на редовете
 train_set_x = train_set_x.reshape(-1,1)
 test_set_x = test_set_x.reshape(-1,1)
 train_set_y = train_set_y.reshape(-1, 1)
 test_set_y = test_set_y.reshape(-1,1)
 
+# Инициализиране и обучение на линейния модел
 reg = LinearRegression()
 reg.fit(train_set_x, train_set_y)
 
+# Използваме обучения модел за да направи предсказание за цените, на база предикторите от 
+# тестовото множество (test_set_x)
 y_prediction = reg.predict(test_set_x)
+
+# Изчисляваме Root Mean Squared Error 
 rmse = (np.sqrt(mean_squared_error(test_set_y, y_prediction)))
+
+# По-добрите модели имат RMSE, което се доближава до 0
 print('RMSE : {}'.format(rmse))
+# и R2, който се приближава към 1
 print('R2: {}'.format(reg.score(test_set_x, test_set_y)))
 
 plt.figure()
