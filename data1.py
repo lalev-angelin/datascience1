@@ -46,6 +46,9 @@ import seaborn as sb
 # който се използва без префикс за неймспейс
 
 from sklearn.datasets import load_boston
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
 
 # Ето тук load_boston се използва без никакъв префикс.
 # В случая зарежда готовият тестов набор boston, 
@@ -117,5 +120,17 @@ bottom, top = ax.get_ylim()
 ax.set_ylim(bottom+0.5, top-0.5)
 plt.show()
 
+train_set_x, test_set_x, train_set_y, test_set_y = train_test_split(boston.data[:,5], boston.target, test_size=0.2, random_state=5) 
 
+train_set_x = train_set_x.reshape(-1,1)
+test_set_x = test_set_x.reshape(-1,1)
+train_set_y = train_set_y.reshape(-1, 1)
+test_set_y = test_set_y.reshape(-1,1)
 
+reg = LinearRegression()
+reg.fit(train_set_x, train_set_y)
+
+y_prediction = reg.predict(test_set_x)
+rmse = (np.sqrt(mean_squared_error(test_set_y, y_prediction)))
+print('RMSE : {}'.format(rmse))
+print('R2: {}'.format(reg.score(test_set_x, test_set_y)))
